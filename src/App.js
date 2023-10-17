@@ -1,33 +1,30 @@
 import AppHeader from "./components/AppHeader";
 import InvestmentTable from "./components/table/InvestmentTable";
 import Form from "./components/form/Form";
+import { useState } from "react";
 
 function App() {
+  const [results, setResults] = useState(null);
+
   const calculateHandler = (userInput) => {
-    // Should be triggered when form is submitted
-    // You might not directly want to bind it to the submit event on the form though...
+    const yearlyData = [];
 
-    const yearlyData = []; // per-year results
-
-    let currentSavings = +userInput["current-savings"]; // feel free to change the shape of this input object!
-    const yearlyContribution = +userInput["yearly-contribution"]; // as mentioned: feel free to change the shape...
+    let currentSavings = +userInput["current-savings"];
+    const yearlyContribution = +userInput["yearly-contribution"];
     const expectedReturn = +userInput["expected-return"] / 100;
     const duration = +userInput["duration"];
 
-    // The below code calculates yearly results (total savings, interest etc)
     for (let i = 0; i < duration; i++) {
       const yearlyInterest = currentSavings * expectedReturn;
       currentSavings += yearlyInterest + yearlyContribution;
       yearlyData.push({
-        // feel free to change the shape of the data pushed to the array!
         year: i + 1,
         yearlyInterest: yearlyInterest,
         savingsEndOfYear: currentSavings,
         yearlyContribution: yearlyContribution,
       });
     }
-
-    // do something with yearlyData ...
+    setResults(yearlyData);
   };
 
   return (
@@ -36,10 +33,17 @@ function App() {
 
       <Form onSubmitForm={calculateHandler} />
 
-      {/* Todo: Show below table conditionally (only once result data is available) */}
-      {/* Show fallback text if no data is available */}
-
-      <InvestmentTable />
+      {!results && <p>There are no results to display.</p>}
+      {results && (
+        <InvestmentTable
+          data={results}
+          initialInvestment={
+            results[0].savingsEndOfYear -
+            results[0].yearlyInterest -
+            results[0].yearlyContribution
+          }
+        />
+      )}
     </div>
   );
 }

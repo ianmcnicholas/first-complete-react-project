@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 function Form(props) {
-  const [enteredCurrentSavings, setCurrentSavings] = useState("");
-  const [enteredYearlySavings, setYearlySavings] = useState("");
-  const [enteredExpectedInterest, setExpectedInterest] = useState("");
-  const [enteredInvestmentDuration, setInvestmentDuration] = useState("");
+  const [enteredCurrentSavings, setCurrentSavings] = useState(10000);
+  const [enteredYearlySavings, setYearlySavings] = useState(1200);
+  const [enteredExpectedInterest, setExpectedInterest] = useState(7);
+  const [enteredInvestmentDuration, setInvestmentDuration] = useState(10);
 
   const currentSavingsChangeHandler = (event) => {
     setCurrentSavings(event.target.value);
@@ -21,15 +21,20 @@ function Form(props) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    // create object from form data here # newData
-    // props.onSubmitForm(newData);
+    const newData = {
+      "current-savings": enteredCurrentSavings,
+      "yearly-contribution": enteredYearlySavings,
+      "expected-return": enteredExpectedInterest,
+      duration: enteredInvestmentDuration,
+    };
+    props.onSubmitForm(newData);
   };
 
   const onResetHandler = () => {
-    setCurrentSavings("");
-    setYearlySavings("");
-    setExpectedInterest("");
-    setInvestmentDuration("");
+    setCurrentSavings(10000);
+    setYearlySavings(1200);
+    setExpectedInterest(7);
+    setInvestmentDuration(10);
   };
 
   return (
