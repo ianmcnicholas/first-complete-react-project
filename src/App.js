@@ -33,7 +33,7 @@ function App() {
 
       <Form onSubmitForm={calculateHandler} />
 
-      {!results && <p>There are no results to display.</p>}
+      {!results && <p style={{textAlign: "center"}}>There are no results to display.</p>}
       {results && (
         <InvestmentTable
           data={results}
